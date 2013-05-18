@@ -1,4 +1,4 @@
-# This is a very basic implementation of a set type in go
+# This is a very basic implementation of a set type in golang
 
 http://en.wikipedia.org/wiki/Set_(computer_science)
 
