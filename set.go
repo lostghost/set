@@ -10,9 +10,14 @@ type Set struct {
 type MapFunction func(interface{}) interface{}
 
 // creates a new, initially empty set structure.
-func New() Set {
+func New(items ...interface{}) Set {
 	var set Set
 	set.m = make(map[interface{}]bool)
+	if len(items) > 0 {
+		for i := range items {
+			set.Add(items[i])
+		}
+	}
 	return set
 }
 

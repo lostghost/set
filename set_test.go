@@ -10,6 +10,17 @@ func TestNew(t *testing.T) {
 	if testSet.Size() != 0 {
 		t.Errorf("A new set should have a size of 0")
 	}
+
+	testSet = New("one", "two", "three", 1, 2, 3)
+	if testSet.Size() != 6 {
+		t.Errorf("A new set initialized with 6 items should have a size of 6")
+	}
+
+	items := []interface{}{"english", "spanish", "italian", "french"}
+	testSet = New(items...)
+	if testSet.Size() != len(items) {
+		t.Errorf("A new set initialized with an array of items should have a size equal to the len of the array")
+	}
 }
 
 func TestAdd(t *testing.T) {
