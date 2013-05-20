@@ -9,14 +9,14 @@ type FilterFunction func(interface{}) bool
 
 // Creates a new set structure. The New constructor can take a variadic paramater to initialize the set with an initial set of values.
 func New(items ...interface{}) Set {
-	var set Set
-	set = make(map[interface{}]bool)
+	var o Set
+	o = make(map[interface{}]bool)
 	if len(items) > 0 {
 		for i := range items {
-			set.Add(items[i])
+			o.Add(items[i])
 		}
 	}
-	return set
+	return o
 }
 
 // Adds the element item to the set, if it is not present already.
@@ -42,11 +42,11 @@ func (s Set) Size() int {
 
 // Returns a list containing the elements of the set in some arbitrary order.
 func (s Set) Enumerate() []interface{} {
-	out := []interface{}{}
+	o := []interface{}{}
 	for i := range s {
-		out = append(out, i)
+		o = append(o, i)
 	}
-	return out
+	return o
 }
 
 // Checks whether the set is empty.
@@ -86,20 +86,19 @@ func (s Set) Filter(f FilterFunction) Set {
 
 // Returns an arbitrary element of the set, deleting it from the set
 func (s Set) Pop() interface{} {
-	var item interface{}
-	for item = range s {
+	var o interface{}
+	for o = range s {
 		break
 	}
-	s.Remove(item)
-	return item
+	s.Remove(o)
+	return o
 }
 
 // A predicate that tests whether the set is a subset of set t.
 func (s Set) Subset(t Set) bool {
-	e := s.Enumerate()
 	o := true
-	for i := range e {
-		if t.Contains(e[i]) == false {
+	for i := range s {
+		if t.Contains(i) == false {
 			o = false
 			break
 		}
@@ -110,9 +109,8 @@ func (s Set) Subset(t Set) bool {
 // Returns the union of sets s and t.
 func Union(s, t Set) Set {
 	o := New(s.Enumerate()...)
-	e := t.Enumerate()
-	for i := range e {
-		o.Add(e[i])
+	for i := range t {
+		o.Add(i)
 	}
 	return o
 }
@@ -120,10 +118,9 @@ func Union(s, t Set) Set {
 // Returns the intersection of sets s and t.
 func Intersection(s, t Set) Set {
 	o := New()
-	e := t.Enumerate()
-	for i := range e {
-		if s.Contains(e[i]) {
-			o.Add(e[i])
+	for i := range t {
+		if s.Contains(i) {
+			o.Add(i)
 		}
 	}
 	return o
@@ -132,16 +129,14 @@ func Intersection(s, t Set) Set {
 // Returns the difference of sets s and t.
 func Difference(s, t Set) Set {
 	o := New()
-	e := t.Enumerate()
-	for i := range e {
-		if s.Contains(e[i]) == false {
-			o.Add(e[i])
+	for i := range t {
+		if s.Contains(i) == false {
+			o.Add(i)
 		}
 	}
-	e = s.Enumerate()
-	for i := range e {
-		if t.Contains(e[i]) == false {
-			o.Add(e[i])
+	for i := range s {
+		if t.Contains(i) == false {
+			o.Add(i)
 		}
 	}
 	return o
