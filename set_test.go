@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+// TESTS
+
 func TestNew(t *testing.T) {
 	testSet := New()
 	if testSet.Size() != 0 {
@@ -424,6 +426,128 @@ func TestDifference(t *testing.T) {
 		}
 	}
 }
+
+// BENCHMARKS
+
+func BenchmarkNew(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = New()
+	}
+}
+
+func BenchmarkNewWithItems(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = New("red", "blue", "green", "yellow")
+	}
+}
+
+func BenchmarkAddInts(b *testing.B) {
+	set := New()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		set.Add(i)
+	}
+}
+
+func BenchmarkAddStrings(b *testing.B) {
+	set := New()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		set.Add(fmt.Sprintf("item_num_%d", i))
+	}
+}
+
+func BenchmarkRemoveInts(b *testing.B) {
+	set := New()
+	for i := 0; i < 40000000; i++ {
+		set.Add(i)
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		set.Remove(i)
+	}
+}
+
+func BenchmarkRemoveStrings(b *testing.B) {
+	set := New()
+	for i := 0; i < 10000000; i++ {
+		set.Add(fmt.Sprintf("item_num_%d", i))
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		set.Remove(fmt.Sprintf("item_num_%d", i))
+	}
+}
+
+func BenchmarkContainsInts(b *testing.B) {
+	set := New()
+	for i := 0; i < 1000000; i++ {
+		set.Add(i)
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		set.Contains(i)
+	}
+}
+
+func BenchmarkContainsStrings(b *testing.B) {
+	set := New()
+	for i := 0; i < 1000000; i++ {
+		set.Add(fmt.Sprintf("item_num_%d", i))
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		set.Contains(fmt.Sprintf("item_num_%d", i))
+	}
+}
+
+func BenchmarkSize(b *testing.B) {
+	set := New()
+	for i := 0; i < 1000000; i++ {
+		set.Add(i)
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		set.Size()
+	}
+}
+
+func BenchmarkEnumerate(b *testing.B) {
+	set := New()
+	for i := 0; i < 1000; i++ {
+		set.Add(i)
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		set.Enumerate()
+	}
+}
+
+func BenchmarkPop(b *testing.B) {
+	set := New()
+	for i := 0; i < 1000; i++ {
+		set.Add(i)
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		set.Pop()
+	}
+}
+
+func BenchmarkUnion(b *testing.B) {
+	set1 := New()
+	set2 := New()
+	for i := 0; i < 1000; i++ {
+		set1.Add(i)
+		set2.Add(fmt.Sprintf("item_num_%d", i))
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		Union(set1, set2)
+	}
+}
+
+// EXAMPLES
 
 func ExampleSet() {
 	// Creating a new empty set

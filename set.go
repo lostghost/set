@@ -1,7 +1,7 @@
 // The set package implements a set collection -- a store a unique values without order.
 package set
 
-type Set map[interface{}]bool
+type Set map[interface{}]struct{}
 
 type MapFunction func(interface{}) interface{}
 
@@ -9,8 +9,7 @@ type FilterFunction func(interface{}) bool
 
 // Creates a new set structure. The New constructor can take a variadic paramater to initialize the set with an initial set of values.
 func New(items ...interface{}) Set {
-	var o Set
-	o = make(map[interface{}]bool)
+	o := make(Set)
 	if len(items) > 0 {
 		for i := range items {
 			o.Add(items[i])
@@ -21,7 +20,7 @@ func New(items ...interface{}) Set {
 
 // Adds the element item to the set, if it is not present already.
 func (s Set) Add(item interface{}) {
-	s[item] = true
+	s[item] = struct{}{}
 }
 
 // Removes the element item from the set, if it is present.
