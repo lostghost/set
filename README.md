@@ -54,3 +54,4 @@ func main() {
     log.Println(colors.Size()) // 0
 }
 ```
+
